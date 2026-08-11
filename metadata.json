@@ -1,0 +1,6 @@
+{
+  "name": "Kumi Engine",
+  "description": "Cantorian Lattice Cryptography & Telemetry Engine (Aleph-1 Protocol / Node MX-SQ-3000)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
