@@ -10,6 +10,9 @@ val PrimaryBlueGlow = Color(0xFF60A5FA)
 val SecondaryEmerald = Color(0xFF10B981) // Emerald Green
 val AccentCyan = Color(0xFF06B6D4)      // Cyan Accent
 val AccentAmber = Color(0xFFF59E0B)     // Amber Warning
+val AccentRose = Color(0xFFF43F5E)      // Rose / Red Accent
+val AccentPurple = Color(0xFFA855F7)    // Purple Accent
+val AccentGold = Color(0xFFF5C518)      // Gold Accent
 val ErrorRed = Color(0xFFEF4444)
 
 val TextPrimary = Color(0xFFF8FAFC)

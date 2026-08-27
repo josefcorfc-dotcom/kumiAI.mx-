@@ -25,6 +25,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kumiengine.ui.components.AlephHandshakeStatusBar
 import com.example.kumiengine.ui.theme.AccentCyan
 import com.example.kumiengine.ui.theme.BorderSubtle
 import com.example.kumiengine.ui.theme.DarkBackground
@@ -50,6 +52,8 @@ import com.example.kumiengine.viewmodel.KumiViewModel
 @Composable
 fun MainScreen(viewModel: KumiViewModel) {
     var selectedTab by remember { mutableIntStateOf(0) }
+    val efficiency by viewModel.handshakeEfficiency.collectAsState()
+    val latencyMs by viewModel.networkLatencyMs.collectAsState()
 
     Scaffold(
         topBar = {
@@ -57,11 +61,13 @@ fun MainScreen(viewModel: KumiViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(DarkBackground)
-                    .border(1.dp, BorderSubtle)
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
+                // Primary Title Banner
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, BorderSubtle)
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -73,18 +79,26 @@ fun MainScreen(viewModel: KumiViewModel) {
                             modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.size(10.dp))
-                        Text(
-                            text = "Kumi AI // NeuroBINAleph-Σ",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Black,
-                            fontFamily = FontFamily.Monospace,
-                            color = TextPrimary
-                        )
+                        Column {
+                            Text(
+                                text = "Kumi AI // NeuroBIN ALEPH-Σ",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Black,
+                                fontFamily = FontFamily.Monospace,
+                                color = TextPrimary
+                            )
+                            Text(
+                                text = "NODO MX-SQ-3000 | OPERADOR: CANTORIANO LEYVA",
+                                fontSize = 8.sp,
+                                fontFamily = FontFamily.Monospace,
+                                color = TextMuted
+                            )
+                        }
                     }
 
                     Text(
-                        text = "MX-SQ-3000",
-                        fontSize = 10.sp,
+                        text = "V28.3-OMEGA",
+                        fontSize = 9.sp,
                         fontFamily = FontFamily.Monospace,
                         fontWeight = FontWeight.Bold,
                         color = SecondaryEmerald,
@@ -95,14 +109,10 @@ fun MainScreen(viewModel: KumiViewModel) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "NODO MX-SQ-3000 | INTEGRIDAD CANTORIANA: ℵ₁ | RFC: CALF8712186T5",
-                    fontSize = 8.sp,
-                    fontFamily = FontFamily.Monospace,
-                    color = TextMuted,
-                    letterSpacing = 1.sp
+                // Real-time Aleph-1 Protocol Handshake Efficiency Progress Gauge
+                AlephHandshakeStatusBar(
+                    efficiency = efficiency,
+                    latencyMs = latencyMs
                 )
             }
         },

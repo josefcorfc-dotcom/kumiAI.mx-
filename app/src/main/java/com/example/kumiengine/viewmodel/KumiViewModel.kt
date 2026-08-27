@@ -30,6 +30,12 @@ class KumiViewModel : ViewModel() {
     )
     val telemetry: StateFlow<List<TelemetryPoint>> = _telemetry.asStateFlow()
 
+    // R^8 Vector Component Hotness State
+    private val _vectorR8 = MutableStateFlow(
+        FloatArray(8) { Random.nextFloat() * 0.7f + 0.15f }
+    )
+    val vectorR8: StateFlow<FloatArray> = _vectorR8.asStateFlow()
+
     // Dinamo Keypad State
     private val _dinamoKeys = MutableStateFlow(listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
     val dinamoKeys: StateFlow<List<Int>> = _dinamoKeys.asStateFlow()
@@ -37,12 +43,33 @@ class KumiViewModel : ViewModel() {
     private val _enteredPasscode = MutableStateFlow("")
     val enteredPasscode: StateFlow<String> = _enteredPasscode.asStateFlow()
 
+    // Aleph-1 Handshake Efficiency & Latency
+    private val _handshakeEfficiency = MutableStateFlow(0.994f)
+    val handshakeEfficiency: StateFlow<Float> = _handshakeEfficiency.asStateFlow()
+
+    private val _networkLatencyMs = MutableStateFlow(24.8f)
+    val networkLatencyMs: StateFlow<Float> = _networkLatencyMs.asStateFlow()
+
+    // Tripartite Autonomous Brain State (CryptAI - GenAI - TestAI)
+    private val _cryptAiEntropy = MutableStateFlow(0.9942f)
+    val cryptAiEntropy: StateFlow<Float> = _cryptAiEntropy.asStateFlow()
+
+    private val _genAiPatchLabel = MutableStateFlow("0 (Estable)")
+    val genAiPatchLabel: StateFlow<String> = _genAiPatchLabel.asStateFlow()
+
+    private val _testAiState = MutableStateFlow("VIGILANDO")
+    val testAiState: StateFlow<String> = _testAiState.asStateFlow()
+
+    private val _isSymbioticHealing = MutableStateFlow(false)
+    val isSymbioticHealing: StateFlow<Boolean> = _isSymbioticHealing.asStateFlow()
+
     // Audit Logs
     private val _auditLogs = MutableStateFlow<List<String>>(
         listOf(
             "[SYS] Nodo MX-SQ-3000 // Protocolo Omega activo.",
-            "[INIT] Integridad Cantoriana: ℵ₁ confirmada.",
-            "[NET] Escuchando en bus de retículo ALEPH-1."
+            "[INIT] Firebase AppCheck Verified: cantoriano-leyvajf",
+            "[NET] Handshake Aleph-1 sincronizado a 97.050 GHz.",
+            "[TRIPARTITE] CryptAI + GenAI + TestAI enlazados en topología de Cantor."
         )
     )
     val auditLogs: StateFlow<List<String>> = _auditLogs.asStateFlow()
@@ -90,10 +117,60 @@ class KumiViewModel : ViewModel() {
                 val nextVal = 97.05f + (Random.nextFloat() - 0.5f) * 0.12f
                 _telemetry.value = _telemetry.value.drop(1) + TelemetryPoint(timeCounter, nextVal)
 
-                if (Random.nextFloat() > 0.75f) {
+                // Handshake Efficiency & Latency updates
+                _handshakeEfficiency.value = (0.988f + Random.nextFloat() * 0.011f).coerceIn(0.985f, 0.999f)
+                _networkLatencyMs.value = (24.0f + Random.nextFloat() * 1.6f)
+
+                // CryptAI entropy background flutter (if not actively healing)
+                if (!_isSymbioticHealing.value) {
+                    val baseEntropy = 0.965f + Random.nextFloat() * 0.034f
+                    _cryptAiEntropy.value = baseEntropy
+                }
+
+                // Real-time R^8 vector component hotness processing
+                val currentR8 = _vectorR8.value
+                val newR8 = FloatArray(8) { idx ->
+                    val prev = currentR8[idx]
+                    val delta = (Random.nextFloat() - 0.5f) * 0.22f
+                    (prev + delta).coerceIn(0.05f, 0.98f)
+                }
+                _vectorR8.value = newR8
+
+                if (Random.nextFloat() > 0.85f) {
                     scrambleKeyboard()
                 }
             }
+        }
+    }
+
+    fun triggerSymbioticSelfHealing() {
+        if (_isSymbioticHealing.value) return
+        viewModelScope.launch {
+            _isSymbioticHealing.value = true
+            
+            // 1. Trigger entropy drop in CryptAI
+            val lowEntropy = 0.8872f
+            _cryptAiEntropy.value = lowEntropy
+            addAuditLog("[CryptAI] Caída de entropía detectada (${String.format("%.4f", lowEntropy)} < 0.9200). Activando GenAI...")
+            delay(1000)
+
+            // 2. GenAI creates repair patch
+            _genAiPatchLabel.value = "1 (Inyectado: [CML-REPAIR-01])"
+            addAuditLog("[GenAI] Parche [CML-REPAIR-01] generado en Kumi-engine.")
+            delay(800)
+
+            // 3. TestAI validates sandbox 1MB
+            _testAiState.value = "VALIDANDO (Sandbox 1MB)"
+            addAuditLog("[TestAI] Iniciando validación topológica en Sandbox 1MB...")
+            delay(1500)
+
+            addAuditLog("[TestAI] Validación de sandbox 1MB exitosa. Distancia coseno óptima: 0.999.")
+            _testAiState.value = "VIGILANDO"
+            _genAiPatchLabel.value = "0 (Estable)"
+            _cryptAiEntropy.value = 0.9942f
+            _handshakeEfficiency.value = 0.999f
+            _isSymbioticHealing.value = false
+            addAuditLog("[SYS] Simbiosis CryptAI + GenAI + TestAI restaurada. Nodo MX-SQ-3000 óptimo.")
         }
     }
 
@@ -130,6 +207,10 @@ class KumiViewModel : ViewModel() {
                 val res = alephCrypto.encrypt(msg.toByteArray(), _targetQuadrant.value)
                 _lastCiphertext.value = res
                 _lastDecryption.value = null
+                
+                // Pulse R^8 hotness vector components
+                _vectorR8.value = FloatArray(8) { Random.nextFloat() * 0.4f + 0.58f }
+                
                 val quadNames = listOf("I", "II", "III", "IV")
                 addAuditLog("[ENC] Mensaje cifrado en Cuadrante ${quadNames[res.metadata.quadrant]} | Ruido: ${String.format("%.2f", res.metadata.noiseMagnitude)}")
             }

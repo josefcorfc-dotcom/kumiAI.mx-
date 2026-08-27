@@ -23,12 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kumiengine.ui.components.AuditTerminal
 import com.example.kumiengine.ui.components.DinamoKeyboard
 import com.example.kumiengine.ui.components.TelemetryChart
+import com.example.kumiengine.ui.components.TripartiteBrainView
+import com.example.kumiengine.ui.components.VectorR8HeatmapView
 import com.example.kumiengine.ui.theme.AccentCyan
 import com.example.kumiengine.ui.theme.BorderSubtle
 import com.example.kumiengine.ui.theme.DarkBackground
@@ -48,6 +52,11 @@ fun TelemetryScreen(
     val dinamoKeys by viewModel.dinamoKeys.collectAsState()
     val passcode by viewModel.enteredPasscode.collectAsState()
     val logs by viewModel.auditLogs.collectAsState()
+    val vectorR8 by viewModel.vectorR8.collectAsState()
+    val cryptAiEntropy by viewModel.cryptAiEntropy.collectAsState()
+    val genAiPatchLabel by viewModel.genAiPatchLabel.collectAsState()
+    val testAiState by viewModel.testAiState.collectAsState()
+    val isHealing by viewModel.isSymbioticHealing.collectAsState()
 
     val scrollState = rememberScrollState()
 
@@ -59,6 +68,15 @@ fun TelemetryScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Tripartite Autonomous Brain Panel (CryptAI - GenAI - TestAI)
+        TripartiteBrainView(
+            cryptAiEntropy = cryptAiEntropy,
+            genAiPatchLabel = genAiPatchLabel,
+            testAiState = testAiState,
+            isHealing = isHealing,
+            onTriggerSelfHealing = { viewModel.triggerSymbioticSelfHealing() }
+        )
+
         // Telemetry Chart
         TelemetryChart(telemetryData = telemetryData)
 
@@ -149,7 +167,44 @@ fun TelemetryScreen(
             }
         }
 
-        // Audit Terminal
-        AuditTerminal(logs = logs)
+        // Live Tactical Event Terminal
+        val sessionId by viewModel.sessionId.collectAsState()
+        AuditTerminal(logs = logs, sessionId = sessionId)
+
+        // R^8 Vector Component Hotness Heatmap Visualization (Below the Terminal)
+        VectorR8HeatmapView(vectorR8 = vectorR8)
+
+        // Sovereign Architecture Operational Footer
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = "CONJUNTO DE CANTOR ARQUITECTURA SOBERANA © 2026 | NODO SELLADO",
+                fontSize = 9.sp,
+                fontFamily = FontFamily.Monospace,
+                color = TextMuted,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "\"La vida es complicada pero muy hermosa.\"",
+                fontSize = 10.sp,
+                fontStyle = FontStyle.Italic,
+                fontFamily = FontFamily.Monospace,
+                color = AccentCyan,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "APACHE LICENSE 2.0 | JOSÉ FRANCISCO CANTORIANO LEYVA | FIREBASE: cantoriano-leyvajf",
+                fontSize = 8.sp,
+                fontFamily = FontFamily.Monospace,
+                color = TextMuted,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
+
