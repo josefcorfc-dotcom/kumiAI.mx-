@@ -2,6 +2,7 @@ package com.example.kumiengine.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -175,6 +177,7 @@ fun TelemetryScreen(
         VectorR8HeatmapView(vectorR8 = vectorR8)
 
         // Sovereign Architecture Operational Footer
+        val uriHandler = LocalUriHandler.current
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -198,7 +201,17 @@ fun TelemetryScreen(
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "APACHE LICENSE 2.0 | JOSÉ FRANCISCO CANTORIANO LEYVA | FIREBASE: cantoriano-leyvajf",
+                text = "APACHE LICENSE 2.0 | JOSÉ FRANCISCO CANTORIANO LEYVA | ORCID: 0009-0007-6963-1205",
+                fontSize = 8.sp,
+                fontFamily = FontFamily.Monospace,
+                color = SecondaryEmerald,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .clickable { uriHandler.openUri("https://orcid.org/0009-0007-6963-1205") }
+                    .padding(4.dp)
+            )
+            Text(
+                text = "FIREBASE PROJECT: cantoriano-leyvajf",
                 fontSize = 8.sp,
                 fontFamily = FontFamily.Monospace,
                 color = TextMuted,
